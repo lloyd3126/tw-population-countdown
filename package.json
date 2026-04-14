@@ -1,8 +1,8 @@
 {
-  "name": "tw-population-countdown",
+  "name": "zhonghua-minguo-population",
   "private": true,
   "version": "0.1.0",
-  "description": "A Vite + React + TypeScript frontend starter for the Taiwan population countdown project.",
+  "description": "中華民國人口數首頁網站，含每月資料自動同步與 GitHub Pages 自動部署。",
   "type": "module",
   "scripts": {
     "dev": "vite",
