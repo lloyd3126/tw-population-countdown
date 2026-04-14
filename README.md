@@ -5,10 +5,10 @@
 線上網站：
 
 ```text
-https://lloyd3126.github.io/zhonghua-minguo-population/
+https://lloyd3126.github.io/tw-population-counter/
 ```
 
-說明：GitHub repository slug 仍需使用 ASCII，因此目前 repository 名稱採用 `zhonghua-minguo-population`，頁面標題與內容維持繁體中文的「中華民國人口數」。
+說明：GitHub repository slug 仍需使用 ASCII，因此目前 repository 名稱採用 `tw-population-counter`，頁面標題與內容維持繁體中文的「中華民國人口數」。
 
 ## 專案結構
 
@@ -106,7 +106,7 @@ public/data/
 部署步驟：
 
 1. 先將專案推到 GitHub repository。
-2. 確認 repository 名稱是 `zhonghua-minguo-population`。
+2. 確認 repository 名稱是 `tw-population-counter`。
 3. 執行 `npm run deploy`，會先自動 build，再把 `dist/` 發佈到 `gh-pages` branch。
 4. 到 GitHub repository 的 `Settings > Pages`。
 5. 將來源設成 `Deploy from a branch`，branch 選 `gh-pages`，資料夾選 `/(root)`。

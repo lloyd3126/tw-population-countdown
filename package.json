@@ -1,5 +1,5 @@
 {
-  "name": "zhonghua-minguo-population",
+  "name": "tw-population-counter",
   "private": true,
   "version": "0.1.0",
   "description": "中華民國人口數首頁網站，含每月資料自動同步與 GitHub Pages 自動部署。",

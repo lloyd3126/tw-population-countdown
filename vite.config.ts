@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const githubPagesRepoName = 'zhonghua-minguo-population'
+const githubPagesRepoName = 'tw-population-counter'
 const githubPagesBase = `/${githubPagesRepoName}/`
 
 export default defineConfig(({ command }) => ({
