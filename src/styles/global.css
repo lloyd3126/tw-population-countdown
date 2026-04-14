@@ -1,0 +1,222 @@
+:root {
+  font-family: 'Avenir Next', 'Segoe UI', 'PingFang TC', 'Noto Sans TC', sans-serif;
+  color: #f7f4ea;
+  background:
+    radial-gradient(circle at top left, rgba(238, 108, 77, 0.38), transparent 28%),
+    radial-gradient(circle at 85% 15%, rgba(22, 76, 143, 0.35), transparent 32%),
+    linear-gradient(145deg, #071421 0%, #0f2742 42%, #1a1e39 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 3rem 0 4rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.hero__copy,
+.hero__panel,
+.info-card,
+.metric-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(247, 244, 234, 0.14);
+  border-radius: 28px;
+  background: rgba(6, 12, 24, 0.58);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 80px rgba(7, 20, 33, 0.32);
+}
+
+.hero__copy,
+.hero__panel {
+  padding: 1.75rem;
+}
+
+.hero__copy::after,
+.hero__panel::after,
+.info-card::after,
+.metric-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(247, 244, 234, 0.08), transparent 50%);
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  color: #ffd8c2;
+  background: rgba(238, 108, 77, 0.18);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.8rem, 7vw, 5.6rem);
+  line-height: 0.95;
+}
+
+.hero__lede {
+  max-width: 56ch;
+  margin: 1.25rem 0 0;
+  color: rgba(247, 244, 234, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+
+.hero__meta div {
+  padding: 1rem 1.1rem;
+  border-radius: 20px;
+  background: rgba(247, 244, 234, 0.08);
+}
+
+.hero__meta strong {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 1.05rem;
+}
+
+.hero__meta-label {
+  color: rgba(247, 244, 234, 0.68);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.metric-card {
+  padding: 1.15rem;
+  background:
+    radial-gradient(circle at top, rgba(100, 196, 255, 0.18), transparent 45%),
+    rgba(247, 244, 234, 0.06);
+}
+
+.metric-card__label {
+  display: block;
+  color: rgba(247, 244, 234, 0.65);
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric-card__value {
+  display: block;
+  margin-top: 0.65rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1;
+}
+
+.hero__notes {
+  margin-top: 1.4rem;
+  padding: 1rem 1.1rem;
+  border-radius: 22px;
+  background: rgba(10, 24, 41, 0.75);
+}
+
+.hero__notes h2,
+.info-card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.hero__notes ul,
+.info-card ul {
+  margin: 0.95rem 0 0;
+  padding-left: 1.15rem;
+  color: rgba(247, 244, 234, 0.82);
+  line-height: 1.7;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.info-card {
+  padding: 1.5rem;
+}
+
+@media (max-width: 920px) {
+  .hero,
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(100% - 1.25rem, 100%);
+    padding: 1.2rem 0 2.25rem;
+  }
+
+  .hero__copy,
+  .hero__panel,
+  .info-card {
+    padding: 1.25rem;
+  }
+
+  .hero__meta,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 12vw, 3.8rem);
+  }
+}

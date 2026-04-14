@@ -1,0 +1,7 @@
+interface:
+  display_name: "Taiwan Gov Data"
+  short_description: "Search and summarize datasets from data.gov.tw."
+  default_prompt: "Use $tw-gov-data to find relevant Taiwan government open datasets, compare candidates, and surface download links."
+
+policy:
+  allow_implicit_invocation: true
