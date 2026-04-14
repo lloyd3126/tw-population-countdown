@@ -33,8 +33,10 @@ jobs:
         run: npm run sync:population
 
       - name: Commit updated data
+        id: commit_data
         run: |
           if git diff --quiet -- public/data; then
+            echo "data_changed=false" >> "$GITHUB_OUTPUT"
             echo "No population data changes detected."
             exit 0
           fi
@@ -44,3 +46,16 @@ jobs:
           git add public/data
           git commit -m "chore(data): sync population summary"
           git push
+          echo "data_changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build site
+        if: steps.commit_data.outputs.data_changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: npm run build
+
+      - name: Deploy site to gh-pages
+        if: steps.commit_data.outputs.data_changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          npx gh-pages -d dist -u "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"

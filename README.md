@@ -72,7 +72,8 @@ GitHub Actions 也可自動執行同步：
 
 - workflow 名稱：`Sync Population Data`
 - 觸發方式：手動執行或每日定時檢查
-- 有資料變更時，會自動更新 `public/data/` 並 commit 回 repository
+- 有資料變更時，會自動更新 `public/data/`、commit 回 repository，並重新 build 後發佈到 `gh-pages` branch
+- 若手動執行 workflow，就算資料沒有變動，也會重新 build 並部署目前版本
 
 ## Build 輸出位置
 
@@ -99,5 +100,7 @@ public/data/
 3. 執行 `npm run deploy`，會先自動 build，再把 `dist/` 發佈到 `gh-pages` branch。
 4. 到 GitHub repository 的 `Settings > Pages`。
 5. 將來源設成 `Deploy from a branch`，branch 選 `gh-pages`，資料夾選 `/(root)`。
+
+如果已啟用 `Sync Population Data` workflow，之後每日同步到新資料時也會自動重新部署，不需要再手動執行 `npm run deploy`。
 
 如果之後 GitHub repository 名稱改了，記得同步更新 [vite.config.ts](/Users/chenchungnien/code/tw-population-countdown/vite.config.ts) 裡的 `base` 設定。
