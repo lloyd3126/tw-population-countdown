@@ -83,7 +83,7 @@ GitHub Actions 也可自動執行同步：
 - 排程時間：每日台灣時間約 10:15
 - 有資料變更時，會自動更新 `public/data/`、commit 回 repository，並重新 build 後發佈到 `gh-pages` branch
 - 若手動執行 workflow，就算資料沒有變動，也會重新 build 並部署目前版本
-- workflow 已設定 `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`，避免 GitHub Actions JavaScript action runtime 的 Node 20 淘汰警告
+- workflow 使用 `actions/checkout@v6` 與 `actions/setup-node@v6`，搭配 Node.js 24 執行環境
 
 ## Build 輸出位置
 
