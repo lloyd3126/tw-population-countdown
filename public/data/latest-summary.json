@@ -11,9 +11,9 @@
   "divorces": 4765,
   "momChange": -9705,
   "yoyChange": -104174,
-  "updatedAt": "2026-04-14T02:30:00.285Z",
   "sources": {
     "populationDataset": "77145",
     "vitalDataset": "131135"
-  }
+  },
+  "updatedAt": "2026-04-14T02:30:00.285Z"
 }

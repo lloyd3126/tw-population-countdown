@@ -12,11 +12,11 @@
     "divorces": 4427,
     "momChange": null,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-04",
@@ -31,11 +31,11 @@
     "divorces": 4334,
     "momChange": -9468,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-05",
@@ -50,11 +50,11 @@
     "divorces": 4532,
     "momChange": -9804,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-06",
@@ -69,11 +69,11 @@
     "divorces": 4562,
     "momChange": -8729,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-07",
@@ -88,11 +88,11 @@
     "divorces": 4506,
     "momChange": -8805,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-08",
@@ -107,11 +107,11 @@
     "divorces": 4486,
     "momChange": -9593,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-09",
@@ -126,11 +126,11 @@
     "divorces": 4402,
     "momChange": -11312,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-10",
@@ -145,11 +145,11 @@
     "divorces": 4511,
     "momChange": -6178,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-11",
@@ -164,11 +164,11 @@
     "divorces": 4066,
     "momChange": -4768,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2025-12",
@@ -183,11 +183,11 @@
     "divorces": 4674,
     "momChange": -6953,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2026-01",
@@ -202,11 +202,11 @@
     "divorces": 4001,
     "momChange": -10087,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2026-02",
@@ -221,11 +221,11 @@
     "divorces": 2995,
     "momChange": -8772,
     "yoyChange": null,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   },
   {
     "month": "2026-03",
@@ -240,10 +240,10 @@
     "divorces": 4765,
     "momChange": -9705,
     "yoyChange": -104174,
-    "updatedAt": "2026-04-14T02:30:00.285Z",
     "sources": {
       "populationDataset": "77145",
       "vitalDataset": "131135"
-    }
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
   }
 ]

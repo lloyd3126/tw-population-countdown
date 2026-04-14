@@ -1,239 +1,195 @@
-import { InfoCard } from '../components/InfoCard'
-import { MetricCard } from '../components/MetricCard'
-import { useMonthlyPopulationCountdown } from '../features/population/hooks/useMonthlyPopulationCountdown'
+import { useEffect, useState, type ReactElement } from 'react'
+import { Info } from 'lucide-react'
 import { usePopulationSummary } from '../features/population/hooks/usePopulationSummary'
-import { formatReportDate } from '../features/population/utils/countdown'
 import {
-  formatDelta,
-  formatMonthLabel,
+  formatPopulationEstimate,
   formatPopulationNumber,
-  formatRelativeSourceTime,
+  formatSecondsNumber,
+  formatTaipeiDateTime,
 } from '../features/population/utils/formatters'
+import {
+  getLivePopulationEstimate,
+  getMonthEndAnchorTimestamp,
+} from '../features/population/utils/liveEstimate'
+import {
+  getAverageMonthlyPopulationChange,
+} from '../features/population/utils/projection'
 
-type DashboardMetric = {
-  label: string
-  value: string
-  note: string
-  tone: 'neutral' | 'positive' | 'negative' | 'accent'
+function formatSignedDecimal(value: number): string {
+  const prefix = value > 0 ? '+' : ''
+
+  return `${prefix}${new Intl.NumberFormat('zh-TW', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value)}`
 }
 
-export function App() {
-  const { targetDate, parts } = useMonthlyPopulationCountdown()
+export function App(): ReactElement {
   const { latestSummary, history, isLoading, error } = usePopulationSummary()
+  const averageMonthlyPopulationChange = getAverageMonthlyPopulationChange(history)
+  const [currentTime, setCurrentTime] = useState(() => Date.now())
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const metrics = [
-    { label: 'Days', value: parts.days.toString().padStart(2, '0') },
-    { label: 'Hours', value: parts.hours.toString().padStart(2, '0') },
-    { label: 'Minutes', value: parts.minutes.toString().padStart(2, '0') },
-    { label: 'Seconds', value: parts.seconds.toString().padStart(2, '0') },
-  ]
+  useEffect(() => {
+    const timerId = window.setInterval(() => {
+      setCurrentTime(Date.now())
+    }, 1000)
 
-  const dashboardMetrics: DashboardMetric[] = latestSummary
-    ? [
-        {
-          label: '比上月增減',
-          value: formatDelta(latestSummary.momChange),
-          note: '全國現住人口',
-          tone: latestSummary.momChange !== null && latestSummary.momChange > 0
-            ? 'positive'
-            : 'negative',
-        },
-        {
-          label: '比去年同月',
-          value: formatDelta(latestSummary.yoyChange),
-          note: '年對年變化',
-          tone: latestSummary.yoyChange !== null && latestSummary.yoyChange > 0
-            ? 'positive'
-            : 'negative',
-        },
-        {
-          label: '本月出生',
-          value: formatPopulationNumber(latestSummary.births),
-          note: `${formatMonthLabel(latestSummary.month)}官方統計`,
-          tone: 'accent',
-        },
-        {
-          label: '本月死亡',
-          value: formatPopulationNumber(latestSummary.deaths),
-          note: `${formatMonthLabel(latestSummary.month)}官方統計`,
-          tone: 'neutral',
-        },
-        {
-          label: '自然增減',
-          value: formatDelta(latestSummary.naturalChange),
-          note: '出生減死亡',
-          tone: latestSummary.naturalChange > 0 ? 'positive' : 'negative',
-        },
-        {
-          label: '本月結婚 / 離婚',
-          value: `${formatPopulationNumber(latestSummary.marriages)} / ${formatPopulationNumber(latestSummary.divorces)}`,
-          note: '含同性婚統計',
-          tone: 'accent',
-        },
-      ]
-    : []
+    return () => {
+      window.clearInterval(timerId)
+    }
+  }, [])
 
-  const trendHistory = history.slice(-12)
-  const maxPopulation = Math.max(...trendHistory.map((item) => item.populationTotal), 1)
+  useEffect(() => {
+    if (!isModalOpen) {
+      return undefined
+    }
 
-  const sourceItems = latestSummary
-    ? [
-        `人口總量：戶政司資料集 ${latestSummary.sources.populationDataset}`,
-        `人口動態：戶政司資料集 ${latestSummary.sources.vitalDataset}`,
-        '首頁使用全國月摘要資料，不直接在瀏覽器加總村里級原始資料。',
-        '所有數字均來自戶政司 open data API 轉製的專案快照。',
-      ]
-    : []
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsModalOpen(false)
+      }
+    }
 
-  const methodologyItems = latestSummary
-    ? [
-        `資料月份：${formatMonthLabel(latestSummary.month)} (${latestSummary.rocMonth})`,
-        '目前人口使用現住人口數按性別及原住民身分分資料集彙總。',
-        '出生、死亡、結婚、離婚使用動態資料統計表彙總。',
-        `專案快照更新時間：${formatRelativeSourceTime(latestSummary.updatedAt)}`,
-      ]
-    : []
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isModalOpen])
+
+  const estimateAnchorTimestamp = latestSummary
+    ? getMonthEndAnchorTimestamp(latestSummary.month) ?? latestSummary.updatedAt
+    : null
+
+  const liveEstimateSnapshot = latestSummary
+    ? getLivePopulationEstimate(
+      latestSummary.populationTotal,
+      averageMonthlyPopulationChange ?? 0,
+      estimateAnchorTimestamp ?? latestSummary.updatedAt,
+      currentTime,
+    )
+    : null
+  const liveEstimate = liveEstimateSnapshot?.estimate ?? null
+  const secondsPerPerson = liveEstimateSnapshot?.secondsPerPerson ?? null
+  const movementText = liveEstimateSnapshot?.movement === 'increase'
+    ? '增加'
+    : liveEstimateSnapshot?.movement === 'decrease'
+      ? '減少'
+      : null
+  const averageMonthlyChangeText = averageMonthlyPopulationChange !== null
+    ? formatSignedDecimal(averageMonthlyPopulationChange)
+    : '資料不足'
+  const speedText = secondsPerPerson && movementText
+    ? `每 ${formatSecondsNumber(secondsPerPerson)} 秒${movementText} 1 人`
+    : '目前資料不足以換算每秒變化速度'
+  const anchorText = estimateAnchorTimestamp
+    ? `${formatTaipeiDateTime(estimateAnchorTimestamp)}（台灣時間）`
+    : '載入中'
 
   return (
-    <main className="shell">
-      <section className="hero">
-        <div className="hero__copy">
-          <span className="eyebrow">戶政司月人口儀表板</span>
-          <h1>Taiwan Population Countdown</h1>
-          <p className="hero__lede">
-            聚焦台灣戶政司月資料的首頁儀表板，呈現最新現住人口、月變化、
-            年變化與人口動態，並保留下次更新的倒數提醒。
-          </p>
-          <div className="hero__spotlight">
-            <span className="hero__spotlight-label">最新全國現住人口</span>
-            <strong className="hero__spotlight-value">
-              {latestSummary ? formatPopulationNumber(latestSummary.populationTotal) : '載入中'}
-            </strong>
-            <span className="hero__spotlight-footnote">
-              {latestSummary
-                ? `資料月份：${formatMonthLabel(latestSummary.month)}`
-                : '正在讀取戶政司月摘要資料'}
-            </span>
-          </div>
-          <div className="hero__meta">
-            <div>
-              <span className="hero__meta-label">Next update window</span>
-              <strong>{formatReportDate(targetDate)}</strong>
-            </div>
-            <div>
-              <span className="hero__meta-label">Data snapshot</span>
-              <strong>
-                {latestSummary ? formatRelativeSourceTime(latestSummary.updatedAt) : '載入中'}
-              </strong>
-            </div>
-          </div>
-        </div>
+    <main className="shell shell--single">
+      <section className="population-stage" aria-label="中華民國人口數">
+        <button
+          type="button"
+          className="population-stage__info-button"
+          aria-label="查看計算方式"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <Info aria-hidden="true" size={22} strokeWidth={2.1} />
+        </button>
 
-        <div className="hero__panel">
-          <div className="metrics-grid">
-            {metrics.map((metric) => (
-              <MetricCard key={metric.label} label={metric.label} value={metric.value} />
-            ))}
-          </div>
-
-          <div className="hero__notes">
-            <h2>Update Countdown</h2>
-            <ul>
-              {metrics.map((metric) => (
-                <li key={metric.label}>
-                  {metric.label}: {metric.value}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="dashboard-grid" aria-label="Population summary">
         {error ? (
-          <article className="status-panel">
-            <span className="eyebrow">Data Error</span>
-            <h2>無法載入人口摘要</h2>
-            <p>{error}</p>
-          </article>
+          <div className="population-stage__status">
+            <p className="population-stage__label">中華民國人口數</p>
+            <strong className="population-stage__value">資料錯誤</strong>
+            <p className="population-stage__meta">{error}</p>
+          </div>
         ) : null}
 
         {isLoading && !latestSummary ? (
-          <article className="status-panel">
-            <span className="eyebrow">Loading</span>
-            <h2>正在整理戶政司月資料</h2>
-            <p>首頁會在資料讀取完成後顯示最新人口、變化指標與最近 12 個月趨勢。</p>
-          </article>
+          <div className="population-stage__status">
+            <p className="population-stage__label">中華民國人口數</p>
+            <strong className="population-stage__value">載入中</strong>
+            <p className="population-stage__meta">正在整理戶政司月資料</p>
+          </div>
         ) : null}
 
-        {latestSummary ? (
-          <>
-            <div className="metrics-grid metrics-grid--dashboard">
-              {dashboardMetrics.map((metric) => (
-                <MetricCard
-                  key={metric.label}
-                  label={metric.label}
-                  value={metric.value}
-                  note={metric.note}
-                  tone={metric.tone}
-                />
-              ))}
-            </div>
-
-            <article className="trend-panel">
-              <div className="trend-panel__header">
-                <div>
-                  <span className="eyebrow">Trend</span>
-                  <h2>最近 12 個月人口趨勢</h2>
-                </div>
-                <p>
-                  以戶政司全國月摘要顯示最近一年的人口總數走勢，方便快速觀察長短期變化。
-                </p>
-              </div>
-
-              <div className="trend-bars" role="list" aria-label="Recent 12-month population trend">
-                {trendHistory.map((item) => {
-                  const height = Math.max(
-                    Math.round((item.populationTotal / maxPopulation) * 100),
-                    12,
-                  )
-
-                  return (
-                    <div key={item.month} className="trend-bar" role="listitem">
-                      <span className="trend-bar__value">
-                        {formatPopulationNumber(item.populationTotal)}
-                      </span>
-                      <div className="trend-bar__track">
-                        <div
-                          className="trend-bar__fill"
-                          style={{ height: `${height}%` }}
-                        />
-                      </div>
-                      <span className="trend-bar__label">{item.month.slice(2)}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </article>
-          </>
+        {!error && latestSummary ? (
+          <div className="population-stage__content">
+            <p className="population-stage__label">中華民國人口數</p>
+            <strong className="population-stage__value">
+              {liveEstimate !== null ? formatPopulationEstimate(liveEstimate) : '載入中'}
+            </strong>
+          </div>
         ) : null}
       </section>
 
-      {latestSummary ? (
-        <section className="info-grid" aria-label="Project information">
-          <InfoCard
-            eyebrow="Source"
-            title="戶政司資料來源"
-            description="首頁人口與動態指標都來自戶政司公開資料集，再轉成專案自己的月摘要。"
-            items={sourceItems}
-          />
-          <InfoCard
-            eyebrow="Method"
-            title="頁面如何計算"
-            description="目前頁面聚焦在全國摘要，不直接暴露村里級欄位或原始 API 結構給 UI。"
-            items={methodologyItems}
-          />
-        </section>
+      {isModalOpen ? (
+        <div
+          className="population-modal"
+          role="presentation"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <section
+            className="population-modal__dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="population-calculation-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="population-modal__close"
+              onClick={() => setIsModalOpen(false)}
+            >
+              關閉
+            </button>
+            <p className="population-modal__eyebrow">說明</p>
+            <h2 id="population-calculation-title">這個人口數是怎麼估算的？</h2>
+            <p className="population-modal__paragraph">
+              首頁數字是以官方月資料為基準，依近一年平均變化速度持續推算，方便一般民眾理解並自行驗算。
+            </p>
+            <div className="population-modal__facts">
+              <div className="population-modal__fact">
+                <span className="population-modal__fact-label">官方月資料</span>
+                <strong className="population-modal__fact-value">
+                  {latestSummary ? `${formatPopulationNumber(latestSummary.populationTotal)} 人` : '載入中'}
+                </strong>
+                <p className="population-modal__fact-note">
+                  {latestSummary ? `採用 ${latestSummary.month} 月官方公布的人口摘要作為起算基準。` : '等待資料載入。'}
+                </p>
+              </div>
+              <div className="population-modal__fact">
+                <span className="population-modal__fact-label">估算起點</span>
+                <strong className="population-modal__fact-value">{anchorText}</strong>
+                <p className="population-modal__fact-note">以該資料月份最後一天的台灣時間為起點，持續往現在推算。</p>
+              </div>
+              <div className="population-modal__fact">
+                <span className="population-modal__fact-label">近一年平均月變化</span>
+                <strong className="population-modal__fact-value">{averageMonthlyChangeText} 人</strong>
+                <p className="population-modal__fact-note">取最近 13 個月資料，比較其中 12 次月增減後，算出平均每月變化人數。</p>
+              </div>
+              <div className="population-modal__fact">
+                <span className="population-modal__fact-label">換算成即時速度</span>
+                <strong className="population-modal__fact-value">{speedText}</strong>
+                <p className="population-modal__fact-note">把平均每月變化攤平成每秒速度，讓畫面上的數字可以持續變動。</p>
+              </div>
+            </div>
+            <div className="population-modal__formula">
+              <span className="population-modal__fact-label">估算公式</span>
+              <p className="population-modal__formula-text">
+                官方月人口 + （近一年平均每月變化 ÷ 平均每月秒數） × 自起算點累積的經過秒數
+              </p>
+              <p className="population-modal__paragraph">
+                這是兩次官方月資料之間的連續推估，用來呈現人口變化的節奏；首頁顯示的是非官方即時估算值，正式數字仍以戶政司每月公布資料為準。
+              </p>
+            </div>
+          </section>
+        </div>
       ) : null}
     </main>
   )

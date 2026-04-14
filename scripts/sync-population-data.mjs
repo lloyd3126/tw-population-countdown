@@ -1,6 +1,7 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { applyStableUpdatedAt } from './population-data-utils.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const projectRoot = path.resolve(__dirname, '..')
@@ -96,7 +97,7 @@ async function fetchAllPages(apiCode, rocMonth) {
   return rows
 }
 
-function buildMonthlySummary(rocMonth, populationRows, vitalRows, updatedAt) {
+function buildMonthlySummary(rocMonth, populationRows, vitalRows) {
   const populationDataset = getPopulationDatasetId(rocMonth)
   const vitalDataset = getVitalDatasetId(rocMonth)
   const vitalApiCode = getVitalApiCode(rocMonth)
@@ -128,7 +129,6 @@ function buildMonthlySummary(rocMonth, populationRows, vitalRows, updatedAt) {
     divorces,
     momChange: null,
     yoyChange: null,
-    updatedAt,
     sources: {
       populationDataset,
       vitalDataset,
@@ -149,9 +149,21 @@ function addComparisons(rows) {
   })
 }
 
+async function readExistingSummaries() {
+  try {
+    const content = await readFile(path.join(outputDir, 'monthly-summary.json'), 'utf8')
+    const parsed = JSON.parse(content)
+
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 async function main() {
   const latestRocMonth = getLastCompletedRocMonth()
   const months = getRecentRocMonths(MONTH_COUNT, latestRocMonth)
+  const existingSummaries = await readExistingSummaries()
   const updatedAt = new Date().toISOString()
   const summaries = []
 
@@ -159,16 +171,17 @@ async function main() {
     const populationRows = await fetchAllPages(getPopulationApiCode(rocMonth), rocMonth)
     const vitalRows = await fetchAllPages(getVitalApiCode(rocMonth), rocMonth)
 
-    summaries.push(buildMonthlySummary(rocMonth, populationRows, vitalRows, updatedAt))
+    summaries.push(buildMonthlySummary(rocMonth, populationRows, vitalRows))
   }
 
   const withComparisons = addComparisons(summaries)
-  const latestSummary = withComparisons.at(-1)
+  const withStableUpdatedAt = applyStableUpdatedAt(existingSummaries, withComparisons, updatedAt)
+  const latestSummary = withStableUpdatedAt.at(-1)
 
   await mkdir(outputDir, { recursive: true })
   await writeFile(
     path.join(outputDir, 'monthly-summary.json'),
-    `${JSON.stringify(withComparisons, null, 2)}\n`,
+    `${JSON.stringify(withStableUpdatedAt, null, 2)}\n`,
     'utf8',
   )
   await writeFile(
@@ -177,7 +190,7 @@ async function main() {
     'utf8',
   )
 
-  console.log(`Synced ${withComparisons.length} months through ${latestSummary.month}.`)
+  console.log(`Synced ${withStableUpdatedAt.length} months through ${latestSummary.month}.`)
 }
 
 main().catch((error) => {
