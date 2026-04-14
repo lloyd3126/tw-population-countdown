@@ -62,12 +62,30 @@ npm run preview
 npm run deploy
 ```
 
+同步戶政司月人口摘要資料：
+
+```bash
+npm run sync:population
+```
+
+GitHub Actions 也可自動執行同步：
+
+- workflow 名稱：`Sync Population Data`
+- 觸發方式：手動執行或每日定時檢查
+- 有資料變更時，會自動更新 `public/data/` 並 commit 回 repository
+
 ## Build 輸出位置
 
 `npm run build` 之後，產物會輸出到：
 
 ```text
 dist/
+```
+
+戶政司月摘要 JSON 會輸出到：
+
+```text
+public/data/
 ```
 
 ## GitHub Pages 部署方式

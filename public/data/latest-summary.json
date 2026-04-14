@@ -1,0 +1,19 @@
+{
+  "month": "2026-03",
+  "rocMonth": "11503",
+  "populationTotal": 23270568,
+  "populationMale": 11444400,
+  "populationFemale": 11826168,
+  "births": 8798,
+  "deaths": 18607,
+  "naturalChange": -9809,
+  "marriages": 9756,
+  "divorces": 4765,
+  "momChange": -9705,
+  "yoyChange": -104174,
+  "updatedAt": "2026-04-14T02:30:00.285Z",
+  "sources": {
+    "populationDataset": "77145",
+    "vitalDataset": "131135"
+  }
+}

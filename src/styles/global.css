@@ -113,6 +113,39 @@ select {
   margin-top: 1.8rem;
 }
 
+.hero__spotlight {
+  margin-top: 1.8rem;
+  padding: 1.35rem 1.4rem;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(100, 196, 255, 0.18), transparent 32%),
+    rgba(247, 244, 234, 0.06);
+}
+
+.hero__spotlight-label,
+.hero__spotlight-footnote {
+  display: block;
+}
+
+.hero__spotlight-label {
+  color: rgba(247, 244, 234, 0.68);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero__spotlight-value {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: clamp(2.6rem, 6vw, 4.75rem);
+  line-height: 0.95;
+}
+
+.hero__spotlight-footnote {
+  margin-top: 0.65rem;
+  color: rgba(247, 244, 234, 0.76);
+}
+
 .hero__meta div {
   padding: 1rem 1.1rem;
   border-radius: 20px;
@@ -145,6 +178,24 @@ select {
     rgba(247, 244, 234, 0.06);
 }
 
+.metric-card--positive {
+  background:
+    radial-gradient(circle at top, rgba(110, 235, 172, 0.2), transparent 45%),
+    rgba(247, 244, 234, 0.06);
+}
+
+.metric-card--negative {
+  background:
+    radial-gradient(circle at top, rgba(255, 153, 126, 0.18), transparent 45%),
+    rgba(247, 244, 234, 0.06);
+}
+
+.metric-card--accent {
+  background:
+    radial-gradient(circle at top, rgba(255, 221, 138, 0.18), transparent 45%),
+    rgba(247, 244, 234, 0.06);
+}
+
 .metric-card__label {
   display: block;
   color: rgba(247, 244, 234, 0.65);
@@ -156,8 +207,16 @@ select {
 .metric-card__value {
   display: block;
   margin-top: 0.65rem;
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  line-height: 1;
+  font-size: clamp(1.6rem, 4vw, 2.9rem);
+  line-height: 1.05;
+}
+
+.metric-card__note {
+  display: block;
+  margin-top: 0.75rem;
+  color: rgba(247, 244, 234, 0.68);
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .hero__notes {
@@ -192,9 +251,115 @@ select {
   padding: 1.5rem;
 }
 
+.info-card__description {
+  margin: 0.85rem 0 0;
+  color: rgba(247, 244, 234, 0.78);
+  line-height: 1.7;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.metrics-grid--dashboard {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.trend-panel,
+.status-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+  border: 1px solid rgba(247, 244, 234, 0.14);
+  border-radius: 28px;
+  background: rgba(6, 12, 24, 0.58);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 80px rgba(7, 20, 33, 0.32);
+}
+
+.trend-panel::after,
+.status-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(247, 244, 234, 0.08), transparent 55%);
+  pointer-events: none;
+}
+
+.status-panel h2,
+.trend-panel h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.status-panel p,
+.trend-panel__header p {
+  margin: 0.85rem 0 0;
+  color: rgba(247, 244, 234, 0.78);
+  line-height: 1.7;
+}
+
+.trend-panel__header {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: end;
+}
+
+.trend-bars {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  align-items: end;
+}
+
+.trend-bar {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.trend-bar__value {
+  color: rgba(247, 244, 234, 0.7);
+  font-size: 0.75rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  justify-self: center;
+}
+
+.trend-bar__track {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  min-height: 220px;
+  padding: 0.55rem;
+  border-radius: 20px;
+  background: rgba(247, 244, 234, 0.05);
+}
+
+.trend-bar__fill {
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffb98f 0%, #63c3ff 100%);
+  box-shadow: 0 10px 32px rgba(99, 195, 255, 0.25);
+}
+
+.trend-bar__label {
+  color: rgba(247, 244, 234, 0.76);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
 @media (max-width: 920px) {
   .hero,
   .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid--dashboard,
+  .trend-panel__header {
     grid-template-columns: 1fr;
   }
 }
@@ -214,6 +379,10 @@ select {
   .hero__meta,
   .metrics-grid {
     grid-template-columns: 1fr;
+  }
+
+  .trend-bars {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .hero h1 {

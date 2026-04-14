@@ -1,15 +1,21 @@
 type MetricCardProps = {
   label: string
-  value: number
+  value: string
+  note?: string
+  tone?: 'neutral' | 'positive' | 'negative' | 'accent'
 }
 
-export function MetricCard({ label, value }: MetricCardProps) {
+export function MetricCard({
+  label,
+  value,
+  note,
+  tone = 'neutral',
+}: MetricCardProps) {
   return (
-    <article className="metric-card">
+    <article className={`metric-card metric-card--${tone}`}>
       <span className="metric-card__label">{label}</span>
-      <strong className="metric-card__value">
-        {value.toString().padStart(2, '0')}
-      </strong>
+      <strong className="metric-card__value">{value}</strong>
+      {note ? <span className="metric-card__note">{note}</span> : null}
     </article>
   )
 }
