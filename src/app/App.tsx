@@ -1,8 +1,7 @@
-import { useEffect, useState, type ReactElement } from 'react'
+import { useEffect, useState, type CSSProperties, type ReactElement } from 'react'
 import { Info } from 'lucide-react'
 import { usePopulationSummary } from '../features/population/hooks/usePopulationSummary'
 import {
-  formatPopulationEstimate,
   formatPopulationNumber,
   formatSecondsNumber,
   formatTaipeiDateTime,
@@ -31,12 +30,17 @@ export function App(): ReactElement {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
-    const timerId = window.setInterval(() => {
+    let animationFrameId = 0
+
+    const tick = () => {
       setCurrentTime(Date.now())
-    }, 1000)
+      animationFrameId = window.requestAnimationFrame(tick)
+    }
+
+    animationFrameId = window.requestAnimationFrame(tick)
 
     return () => {
-      window.clearInterval(timerId)
+      window.cancelAnimationFrame(animationFrameId)
     }
   }, [])
 
@@ -73,8 +77,10 @@ export function App(): ReactElement {
       currentTime,
     )
     : null
-  const liveEstimate = liveEstimateSnapshot?.estimate ?? null
+  const displayedPopulation = liveEstimateSnapshot?.displayPopulation ?? null
+  const progressPercentage = liveEstimateSnapshot?.progressPercentage ?? 0
   const secondsPerPerson = liveEstimateSnapshot?.secondsPerPerson ?? null
+  const transitionPhase = liveEstimateSnapshot?.transitionPhase ?? 'towards-white'
   const movementText = liveEstimateSnapshot?.movement === 'increase'
     ? '增加'
     : liveEstimateSnapshot?.movement === 'decrease'
@@ -89,10 +95,18 @@ export function App(): ReactElement {
   const anchorText = estimateAnchorTimestamp
     ? `${formatTaipeiDateTime(estimateAnchorTimestamp)}（台灣時間）`
     : '載入中'
+  const populationStageStyle: CSSProperties = {
+    '--population-stage-progress': `${progressPercentage / 100}`,
+  } as CSSProperties
 
   return (
     <main className="shell shell--single">
-      <section className="population-stage" aria-label="中華民國人口數">
+      <section
+        className={`population-stage population-stage--${transitionPhase}`}
+        aria-label="中華民國人口數"
+        style={populationStageStyle}
+      >
+        <div className="population-stage__progress" aria-hidden="true" />
         <button
           type="button"
           className="population-stage__info-button"
@@ -122,7 +136,7 @@ export function App(): ReactElement {
           <div className="population-stage__content">
             <p className="population-stage__label">中華民國人口數</p>
             <strong className="population-stage__value">
-              {liveEstimate !== null ? formatPopulationEstimate(liveEstimate) : '載入中'}
+              {displayedPopulation !== null ? formatPopulationNumber(displayedPopulation) : '載入中'}
             </strong>
           </div>
         ) : null}

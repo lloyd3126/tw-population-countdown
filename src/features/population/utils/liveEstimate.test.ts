@@ -22,24 +22,85 @@ describe('getLivePopulationEstimate', () => {
         )
 
         expect(estimate.estimate).toBeCloseTo(23_266_968, 5)
+        expect(estimate.displayPopulation).toBe(23_266_968)
+        expect(estimate.progressPercentage).toBe(0)
         expect(estimate.secondsPerPerson).toBeCloseTo(1, 10)
+        expect(estimate.transitionPhase).toBe('towards-white')
         expect(estimate.movement).toBe('decrease')
     })
 
-    it('reports increasing movement when the average trend is positive', () => {
+    it('starts the next cycle from full white before fading back to black', () => {
         const anchorTimestamp = '2026-04-14T02:30:00.000Z'
-        const oneHourLater = Date.parse(anchorTimestamp) + (60 * 60 * 1000)
+        const threeSecondsLater = Date.parse(anchorTimestamp) + 3000
 
         const estimate = getLivePopulationEstimate(
             23_270_568,
             AVERAGE_MONTH_SECONDS / 2,
             anchorTimestamp,
-            oneHourLater,
+            threeSecondsLater,
         )
 
-        expect(estimate.estimate).toBeCloseTo(23_272_368, 5)
-        expect(estimate.secondsPerPerson).toBeCloseTo(2, 10)
+        expect(estimate.displayPopulation).toBe(23_270_569)
+        expect(estimate.progressPercentage).toBeCloseTo(50, 10)
+        expect(estimate.transitionPhase).toBe('towards-black')
         expect(estimate.movement).toBe('increase')
+    })
+
+    it('keeps the displayed population flat until an increase cycle is complete', () => {
+        const anchorTimestamp = '2026-04-14T02:30:00.000Z'
+        const oneSecondLater = Date.parse(anchorTimestamp) + 1000
+
+        const estimate = getLivePopulationEstimate(
+            23_270_568,
+            AVERAGE_MONTH_SECONDS / 2,
+            anchorTimestamp,
+            oneSecondLater,
+        )
+
+        expect(estimate.estimate).toBeCloseTo(23_270_568.5, 5)
+        expect(estimate.displayPopulation).toBe(23_270_568)
+        expect(estimate.progressPercentage).toBeCloseTo(50, 10)
+        expect(estimate.secondsPerPerson).toBeCloseTo(2, 10)
+        expect(estimate.transitionPhase).toBe('towards-white')
+        expect(estimate.movement).toBe('increase')
+    })
+
+    it('changes the displayed population only when an increase cycle is complete', () => {
+        const anchorTimestamp = '2026-04-14T02:30:00.000Z'
+        const twoSecondsLater = Date.parse(anchorTimestamp) + 2000
+
+        const estimate = getLivePopulationEstimate(
+            23_270_568,
+            AVERAGE_MONTH_SECONDS / 2,
+            anchorTimestamp,
+            twoSecondsLater,
+        )
+
+        expect(estimate.estimate).toBeCloseTo(23_270_569, 5)
+        expect(estimate.displayPopulation).toBe(23_270_569)
+        expect(estimate.progressPercentage).toBe(100)
+        expect(estimate.secondsPerPerson).toBeCloseTo(2, 10)
+        expect(estimate.transitionPhase).toBe('towards-black')
+        expect(estimate.movement).toBe('increase')
+    })
+
+    it('keeps the displayed population flat until a decrease cycle is complete', () => {
+        const anchorTimestamp = '2026-04-14T02:30:00.000Z'
+        const threeSecondsLater = Date.parse(anchorTimestamp) + 3000
+
+        const estimate = getLivePopulationEstimate(
+            23_270_568,
+            -(AVERAGE_MONTH_SECONDS / 2),
+            anchorTimestamp,
+            threeSecondsLater,
+        )
+
+        expect(estimate.estimate).toBeCloseTo(23_270_566.5, 5)
+        expect(estimate.displayPopulation).toBe(23_270_567)
+        expect(estimate.progressPercentage).toBeCloseTo(50, 10)
+        expect(estimate.secondsPerPerson).toBeCloseTo(2, 10)
+        expect(estimate.transitionPhase).toBe('towards-black')
+        expect(estimate.movement).toBe('decrease')
     })
 
     it('falls back to the latest official value when decline speed is unavailable', () => {
@@ -52,7 +113,10 @@ describe('getLivePopulationEstimate', () => {
 
         expect(estimate).toEqual({
             estimate: 23_270_568,
+            displayPopulation: 23_270_568,
+            progressPercentage: 0,
             secondsPerPerson: null,
+            transitionPhase: 'towards-white',
             movement: 'flat',
         })
     })

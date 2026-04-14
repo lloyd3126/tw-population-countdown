@@ -103,6 +103,8 @@ select {
 
 .population-stage {
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: grid;
   place-items: center;
   width: 100%;
@@ -111,17 +113,26 @@ select {
   border: 1px solid var(--border);
   border-radius: 0;
   background: var(--app-background);
-  backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
 }
 
-.population-stage::after {
-  content: '';
+.population-stage--towards-black {
+  background: #fff;
+}
+
+.population-stage__progress {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  background: rgba(255, 255, 255, 0.02);
+  background: #fff;
   pointer-events: none;
+  transform: scaleX(var(--population-stage-progress, 0));
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.population-stage--towards-black .population-stage__progress {
+  background: #000;
+  transform: scaleX(calc(1 - var(--population-stage-progress, 0)));
 }
 
 .population-stage__info-button {
@@ -134,33 +145,37 @@ select {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid currentColor;
   border-radius: 999px;
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  background: transparent;
+  mix-blend-mode: difference;
   cursor: pointer;
-  transition: background-color 160ms ease, transform 160ms ease;
+  transition: transform 160ms ease;
 }
 
 .population-stage__info-button:hover {
-  background: var(--surface-hover);
   transform: translateY(-1px);
 }
 
 .population-stage__content,
 .population-stage__status {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.9rem;
   width: 100%;
+  color: #fff;
   text-align: center;
+  mix-blend-mode: difference;
 }
 
 .population-stage__label {
   margin: 0;
-  color: var(--text-secondary);
+  color: currentColor;
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   letter-spacing: 0.18em;
 }
@@ -169,13 +184,13 @@ select {
   margin: 0;
   font-size: clamp(3.6rem, 10vw, 8rem);
   line-height: 0.95;
-  color: var(--text-primary);
+  color: currentColor;
 }
 
 .population-stage__meta {
   margin: 0;
   max-width: 42rem;
-  color: var(--text-secondary);
+  color: currentColor;
   font-size: 1rem;
   line-height: 1.8;
 }
