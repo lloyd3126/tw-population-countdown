@@ -1,0 +1,249 @@
+[
+  {
+    "month": "2025-03",
+    "rocMonth": "11403",
+    "populationTotal": 23374742,
+    "populationMale": 11509611,
+    "populationFemale": 11865131,
+    "births": 9388,
+    "deaths": 18633,
+    "naturalChange": -9245,
+    "marriages": 10675,
+    "divorces": 4427,
+    "momChange": null,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-04",
+    "rocMonth": "11404",
+    "populationTotal": 23365274,
+    "populationMale": 11503830,
+    "populationFemale": 11861444,
+    "births": 8684,
+    "deaths": 17205,
+    "naturalChange": -8521,
+    "marriages": 6520,
+    "divorces": 4334,
+    "momChange": -9468,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-05",
+    "rocMonth": "11405",
+    "populationTotal": 23355470,
+    "populationMale": 11498215,
+    "populationFemale": 11857255,
+    "births": 8433,
+    "deaths": 15382,
+    "naturalChange": -6949,
+    "marriages": 12791,
+    "divorces": 4532,
+    "momChange": -9804,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-06",
+    "rocMonth": "11406",
+    "populationTotal": 23346741,
+    "populationMale": 11492835,
+    "populationFemale": 11853906,
+    "births": 8968,
+    "deaths": 16554,
+    "naturalChange": -7586,
+    "marriages": 7655,
+    "divorces": 4562,
+    "momChange": -8729,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-07",
+    "rocMonth": "11407",
+    "populationTotal": 23337936,
+    "populationMale": 11487371,
+    "populationFemale": 11850565,
+    "births": 8939,
+    "deaths": 16846,
+    "naturalChange": -7907,
+    "marriages": 7418,
+    "divorces": 4506,
+    "momChange": -8805,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-08",
+    "rocMonth": "11408",
+    "populationTotal": 23328343,
+    "populationMale": 11481623,
+    "populationFemale": 11846720,
+    "births": 8464,
+    "deaths": 15226,
+    "naturalChange": -6762,
+    "marriages": 5916,
+    "divorces": 4486,
+    "momChange": -9593,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-09",
+    "rocMonth": "11409",
+    "populationTotal": 23317031,
+    "populationMale": 11475081,
+    "populationFemale": 11841950,
+    "births": 8603,
+    "deaths": 15387,
+    "naturalChange": -6784,
+    "marriages": 5844,
+    "divorces": 4402,
+    "momChange": -11312,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-10",
+    "rocMonth": "11410",
+    "populationTotal": 23310853,
+    "populationMale": 11470704,
+    "populationFemale": 11840149,
+    "births": 9458,
+    "deaths": 15908,
+    "naturalChange": -6450,
+    "marriages": 10735,
+    "divorces": 4511,
+    "momChange": -6178,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-11",
+    "rocMonth": "11411",
+    "populationTotal": 23306085,
+    "populationMale": 11467137,
+    "populationFemale": 11838948,
+    "births": 7946,
+    "deaths": 14771,
+    "naturalChange": -6825,
+    "marriages": 8586,
+    "divorces": 4066,
+    "momChange": -4768,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2025-12",
+    "rocMonth": "11412",
+    "populationTotal": 23299132,
+    "populationMale": 11462401,
+    "populationFemale": 11836731,
+    "births": 9027,
+    "deaths": 17450,
+    "naturalChange": -8423,
+    "marriages": 10816,
+    "divorces": 4674,
+    "momChange": -6953,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2026-01",
+    "rocMonth": "11501",
+    "populationTotal": 23289045,
+    "populationMale": 11456183,
+    "populationFemale": 11832862,
+    "births": 8723,
+    "deaths": 17529,
+    "naturalChange": -8806,
+    "marriages": 9223,
+    "divorces": 4001,
+    "momChange": -10087,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2026-02",
+    "rocMonth": "11502",
+    "populationTotal": 23280273,
+    "populationMale": 11450829,
+    "populationFemale": 11829444,
+    "births": 6523,
+    "deaths": 14881,
+    "naturalChange": -8358,
+    "marriages": 6733,
+    "divorces": 2995,
+    "momChange": -8772,
+    "yoyChange": null,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  },
+  {
+    "month": "2026-03",
+    "rocMonth": "11503",
+    "populationTotal": 23270568,
+    "populationMale": 11444400,
+    "populationFemale": 11826168,
+    "births": 8798,
+    "deaths": 18607,
+    "naturalChange": -9809,
+    "marriages": 9756,
+    "divorces": 4765,
+    "momChange": -9705,
+    "yoyChange": -104174,
+    "sources": {
+      "populationDataset": "77145",
+      "vitalDataset": "131135"
+    },
+    "updatedAt": "2026-04-14T02:30:00.285Z"
+  }
+]

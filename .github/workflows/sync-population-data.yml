@@ -1,0 +1,63 @@
+name: Sync Population Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-population-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Sync monthly population summary
+        run: npm run sync:population
+
+      - name: Commit updated data
+        id: commit_data
+        run: |
+          if git diff --quiet -- public/data; then
+            echo "data_changed=false" >> "$GITHUB_OUTPUT"
+            echo "No population data changes detected."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          git commit -m "chore(data): sync population summary"
+          git push
+          echo "data_changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build site
+        if: steps.commit_data.outputs.data_changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: npm run build
+
+      - name: Deploy site to gh-pages
+        if: steps.commit_data.outputs.data_changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npx gh-pages -d dist
