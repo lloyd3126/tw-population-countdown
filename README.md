@@ -1,6 +1,12 @@
 # Taiwan Population Countdown
 
-這個專案是一個使用 `Vite + React + TypeScript` 建立的前端專案，已補上本機開發、正式 build 與 GitHub Pages 部署所需設定。
+這個專案是一個使用 `Vite + React + TypeScript` 建立的前端專案，提供中華民國人口數首頁展示，並已補上本機開發、正式 build、GitHub Pages 部署與 GitHub Actions 自動同步流程。
+
+線上網站：
+
+```text
+https://lloyd3126.github.io/tw-population-countdown/
+```
 
 ## 專案結構
 
@@ -72,8 +78,10 @@ GitHub Actions 也可自動執行同步：
 
 - workflow 名稱：`Sync Population Data`
 - 觸發方式：手動執行或每日定時檢查
+- 排程時間：每日台灣時間約 10:15
 - 有資料變更時，會自動更新 `public/data/`、commit 回 repository，並重新 build 後發佈到 `gh-pages` branch
 - 若手動執行 workflow，就算資料沒有變動，也會重新 build 並部署目前版本
+- workflow 已設定 `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true`，避免 GitHub Actions JavaScript action runtime 的 Node 20 淘汰警告
 
 ## Build 輸出位置
 
@@ -102,5 +110,11 @@ public/data/
 5. 將來源設成 `Deploy from a branch`，branch 選 `gh-pages`，資料夾選 `/(root)`。
 
 如果已啟用 `Sync Population Data` workflow，之後每日同步到新資料時也會自動重新部署，不需要再手動執行 `npm run deploy`。
+
+## 已驗證的部署狀態
+
+- `main` 本地 `npm run build` 產出的 `dist/index.html`、`dist/assets/index-BosvEu0P.css`、`dist/assets/index-C1H4IZBK.js` 已和 `gh-pages` 分支及公開站點內容比對一致
+- 公開站點目前由 `gh-pages` branch 提供，Pages 設定來源為 `gh-pages` 的 `/(root)`
+- 公開站點也可直接讀到 `data/latest-summary.json` 與 `data/monthly-summary.json`
 
 如果之後 GitHub repository 名稱改了，記得同步更新 [vite.config.ts](/Users/chenchungnien/code/tw-population-countdown/vite.config.ts) 裡的 `base` 設定。

@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '15 2 * * *'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 permissions:
   contents: write
 
